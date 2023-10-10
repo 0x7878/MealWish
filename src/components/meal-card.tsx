@@ -56,7 +56,7 @@ export default function MealCard() {
       <CardMedia
         component="img"
         height="194"
-        image="/static/images/cards/paella.jpg"
+        image="/media/paella.jpg"
         alt="Paella dish"
       />
       <CardContent>

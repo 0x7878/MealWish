@@ -35,26 +35,26 @@ function App() {
         >
   <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
       
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
           <MealCard/>
       </Grid>
     </Grid>
