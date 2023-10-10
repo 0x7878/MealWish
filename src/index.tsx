@@ -1,25 +1,63 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-// import reportWebVitals from './reportWebVitals';
-//
-// const root = ReactDOM.createRoot(
-//   document.getElementById('root') as HTMLElement
-// );
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
-//
-// // If you want to start measuring performance in your app, pass a function
-// // to log results (for example: reportWebVitals(console.log))
-// // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
+import * as ReactDOM from "react-dom/client";
+import * as React from "react";
+import {
+  StyledEngineProvider,
+  createTheme,
+  ThemeProvider
+} from "@mui/material/styles";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 
-import r2wc from "@r2wc/react-to-web-component"
+class MealWish extends HTMLElement {
 
-const MealWish = r2wc(App)
+  connectedCallback() {
+
+    const shadowContainer = this.attachShadow({ mode: 'open' });
+    const emotionRoot = document.createElement("style");
+    const shadowRootElement = document.createElement("div");
+    shadowContainer.appendChild(emotionRoot);
+    shadowContainer.appendChild(shadowRootElement);
+
+    const cache = createCache({
+      key: "css",
+      prepend: true,
+      container: emotionRoot
+    });
+
+    const shadowTheme = createTheme({
+      components: {
+        MuiPopover: {
+          defaultProps: {
+            container: shadowRootElement
+          }
+        },
+        MuiPopper: {
+          defaultProps: {
+            container: shadowRootElement
+          }
+        },
+        MuiModal: {
+          defaultProps: {
+            container: shadowRootElement
+          }
+        }
+      }
+    });
+  
+    
+   ReactDOM.createRoot(shadowRootElement).render(
+      <React.StrictMode>
+        <CacheProvider value={cache}>
+          <ThemeProvider theme={shadowTheme}>
+            <App />
+          </ThemeProvider>
+        </CacheProvider>
+      </React.StrictMode>
+    );
+  }
+}
 
 customElements.define("meal-wish",MealWish)
+
