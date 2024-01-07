@@ -6,7 +6,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
 import MenuAppBar from './layout/menu-app-bar';
@@ -18,7 +17,7 @@ function App() {
   return (
   <>
     <MenuAppBar/>
-    <Box
+    {/* <Box
           component="main"
           sx={{
             backgroundColor: (theme) =>
@@ -29,8 +28,8 @@ function App() {
             height: '100vh',
             overflow: 'auto',
           }}
-        >
-  <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        > */}
+  <Container style={{marginTop: "80px"}} maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>
           <MealCard/>
@@ -56,7 +55,7 @@ function App() {
       </Grid>
     </Grid>
     </Container>
-    </Box>
+    {/* </Box> */}
   </>
   );
 }

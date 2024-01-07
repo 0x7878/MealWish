@@ -56,7 +56,7 @@ export default function MealCard() {
       <CardMedia
         component="img"
         height="194"
-        image="/media/paella.jpg"
+        image="https://picsum.photos/300/200"
         alt="Paella dish"
       />
       <CardContent>

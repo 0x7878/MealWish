@@ -3,7 +3,6 @@ import App from './App';
 import * as ReactDOM from "react-dom/client";
 import * as React from "react";
 import {
-  StyledEngineProvider,
   createTheme,
   ThemeProvider
 } from "@mui/material/styles";
@@ -60,4 +59,3 @@ class MealWish extends HTMLElement {
 }
 
 customElements.define("meal-wish",MealWish)
-
