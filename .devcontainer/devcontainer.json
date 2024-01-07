@@ -1,0 +1,5 @@
+{
+  "image": "ghcr.io/devcontainers-contrib/features/node-asdf",
+  "features": {
+  }
+}
