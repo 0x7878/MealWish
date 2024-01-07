@@ -21,8 +21,7 @@ export default function MenuAppBar() {
   };
 
   return (
-    // <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" style={{width : "calc(100% - var(--mdc-drawer-width, 0px))"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -31,7 +30,7 @@ export default function MenuAppBar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            {/* <MenuIcon /> */}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             MealWish
@@ -68,6 +67,5 @@ export default function MenuAppBar() {
             </div>
         </Toolbar>
       </AppBar>
-    // </Box>
   );
 }

@@ -26,6 +26,9 @@ class MealWish extends HTMLElement {
     });
 
     const shadowTheme = createTheme({
+      palette: {
+        mode: 'dark',
+      },
       components: {
         MuiPopover: {
           defaultProps: {
@@ -44,7 +47,7 @@ class MealWish extends HTMLElement {
         }
       }
     });
-  
+   
     
    ReactDOM.createRoot(shadowRootElement).render(
       <React.StrictMode>

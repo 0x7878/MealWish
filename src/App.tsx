@@ -16,20 +16,10 @@ import Container from '@mui/material/Container';
 function App() {
   return (
   <>
-    <MenuAppBar/>
-    {/* <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        > */}
-  <Container style={{marginTop: "80px"}} maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+  {/* <div style={{backgroundColor: "red", height: "100vh", width: "300px", zIndex: 1000, position:'fixed'}}></div> */}
+    <MenuAppBar />
+    <Box style={{ overflow: 'auto', height: 'calc(100vh - 66px)', marginTop: "64px",  width : "calc(100% - var(--mdc-drawer-width, 0px))"}} sx={{ bgcolor: 'background.paper',}}>
+  <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>
           <MealCard/>
@@ -55,7 +45,7 @@ function App() {
       </Grid>
     </Grid>
     </Container>
-    {/* </Box> */}
+    </Box>
   </>
   );
 }
