@@ -1,13 +1,12 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Divider from '@mui/material/Divider';
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -21,8 +20,8 @@ export default function MenuAppBar() {
   };
 
   return (
-      <AppBar position="fixed" style={{width : "calc(100% - var(--mdc-drawer-width, 0px))"}}>
-        <Toolbar>
+      <AppBar position="fixed" style={{width : "calc(100% - var(--mdc-drawer-width, 0px))", background: "#101e24"}}>
+        <Toolbar  style={{minHeight: "55px"}}>
           <IconButton
             size="large"
             edge="start"
@@ -32,7 +31,7 @@ export default function MenuAppBar() {
           >
             {/* <MenuIcon /> */}
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "17.5px", fontWeight: 400 }}>
             MealWish
           </Typography>
             <div>
@@ -66,6 +65,7 @@ export default function MenuAppBar() {
               </Menu>
             </div>
         </Toolbar>
+    <Divider />
       </AppBar>
   );
 }

@@ -11,6 +11,11 @@ import { CacheProvider } from "@emotion/react";
 
 class MealWish extends HTMLElement {
 
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    super();
+  }
+
   connectedCallback() {
 
     const shadowContainer = this.attachShadow({ mode: 'open' });
@@ -47,13 +52,12 @@ class MealWish extends HTMLElement {
         }
       }
     });
-   
-    
+
    ReactDOM.createRoot(shadowRootElement).render(
       <React.StrictMode>
         <CacheProvider value={cache}>
           <ThemeProvider theme={shadowTheme}>
-            <App />
+            <App wc={this} />
           </ThemeProvider>
         </CacheProvider>
       </React.StrictMode>
