@@ -1,5 +1,5 @@
 {
-  "image": "ghcr.io/devcontainers-contrib/features/node-asdf",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
   "features": {
   }
 }
