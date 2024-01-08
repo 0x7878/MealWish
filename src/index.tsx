@@ -57,7 +57,7 @@ class MealWish extends HTMLElement {
       <React.StrictMode>
         <CacheProvider value={cache}>
           <ThemeProvider theme={shadowTheme}>
-            <App wc={this} />
+            <App pointer={this} />
           </ThemeProvider>
         </CacheProvider>
       </React.StrictMode>
