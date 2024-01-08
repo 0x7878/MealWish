@@ -6,6 +6,7 @@ import {
   createTheme,
   ThemeProvider
 } from "@mui/material/styles";
+import { HassContextProvider } from './HassContext';
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
@@ -53,11 +54,13 @@ class MealWish extends HTMLElement {
       }
     });
 
-   ReactDOM.createRoot(shadowRootElement).render(
+    ReactDOM.createRoot(shadowRootElement).render(
       <React.StrictMode>
         <CacheProvider value={cache}>
           <ThemeProvider theme={shadowTheme}>
-            <App pointer={this} />
+            <HassContextProvider appInstance={this}>
+              <App />
+            </HassContextProvider>
           </ThemeProvider>
         </CacheProvider>
       </React.StrictMode>

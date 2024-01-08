@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { HassContext } from './HassContext';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,37 +15,27 @@ import MealCard from './components/meal-card';
 import Container from '@mui/material/Container';
 import { Card, CardContent, Typography } from '@mui/material';
 
-function App(props: any) {
-  const { pointer } = props;
-
-  const oldstate = React.useRef<any>({ narrow: undefined, hass: undefined });
-
-  const [narrow, setNarrow] = useState<boolean>(true);
-  const [hass, setHass] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+function App() {
+  const [user, setUser] = React.useState<any>({ name: "loading..."});
+  const eventEmitter = React.useContext(HassContext);
 
   React.useEffect(() => {
-    const observeChanges = () => {
-      // observe narrow
-      if (oldstate.current.narrow !== pointer?.narrow) {
-        oldstate.current.narrow = pointer.narrow;
-        setNarrow(pointer.narrow);
+    const handleUserChanged = (hass: any) => {
+      if (user.name != hass.user.name) {
+        setUser(hass.user);
       }
-      if (oldstate.current.hass !== pointer?.hass) {
-        oldstate.current.hass = pointer?.hass;
-        setHass(pointer.hass);
-        setUser(pointer.hass.user);
-      }
+    }
+
+    eventEmitter.on('hassChanged', handleUserChanged);
+
+    return () => {
+      eventEmitter.off('hassChanged', handleUserChanged);
     };
-
-    const intervalId = setInterval(observeChanges, 1000); // Adjust the interval as needed
-
-    return () => clearInterval(intervalId); // Cleanup when the component unmounts
-  }, []);
+  }, [user]);
 
   return (
     <>
-      <MenuAppBar narrow={narrow} hass={hass} />
+      <MenuAppBar />
       <Box style={{ overflow: 'auto', height: 'calc(100vh - 57px)', marginTop: "56px" }} sx={{ bgcolor: 'background.paper', }}>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={2}>
@@ -55,7 +46,7 @@ function App(props: any) {
                     content of hass.user
                   </Typography>
                   <Typography variant="body2">
-                    {user ? user.name : "loading..."}
+                    {user ? user.name : ""}
                   </Typography>
                 </CardContent>
               </Card>

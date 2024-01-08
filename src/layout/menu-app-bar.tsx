@@ -7,6 +7,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Divider from '@mui/material/Divider';
+import { HassContext } from '../HassContext';
 
 declare global {
   namespace JSX {
@@ -16,11 +17,11 @@ declare global {
   }
 }
 
-export default function MenuAppBar(props: any) {
+export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { narrow, hass } = props;
   
   const ref = React.useRef<any>(null);
+  const narrowRef = React.useRef<any>(undefined);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -30,12 +31,25 @@ export default function MenuAppBar(props: any) {
     setAnchorEl(null);
   };
 
+const eventEmitter = React.useContext(HassContext);
 
-  // @todo: replace this by a proper hook / observer
-  if(ref.current) {
-    ref.current.narrow = narrow;
-    ref.current.hass = hass;
-  }
+  React.useEffect(() => {
+    const handlehassChanged = (hass: any) => {
+     ref.current.hass = hass;
+    }
+    
+    const handlenarrowChanged = (narrow: any) => {
+      ref.current.narrow = narrow;
+    }
+
+    eventEmitter.on('hassChanged', handlehassChanged);
+    eventEmitter.on('narrowChanged', handlenarrowChanged);
+
+    return () => {
+      eventEmitter.off('narrowChanged', handlenarrowChanged);
+      eventEmitter.off('hassChanged', handlehassChanged);
+    };
+  }, [narrowRef.current, ref.current]);
 
   return (
       <><AppBar position="fixed" style={{ width: "calc(100% - var(--mdc-drawer-width, 0px))", background: "#101e24", zIndex:199 }}>
