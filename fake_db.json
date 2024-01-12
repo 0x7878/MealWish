@@ -1,0 +1,38 @@
+{
+  "meal": [ 
+    {
+      "id": "1",
+      "name": "Burger",
+      "image_url": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Pizza",
+      "image_url": "https://www.themealdb.com/images/media/meals/xrptpq1487347049.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Pasta",
+      "image_url": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg"
+    }
+  ],
+  "plan": [
+    {
+      "id": "1",
+      "year:": "2024",
+      "cw": "1",
+      "meals": [
+        { "meal_id": "1", "checked": "true" },
+        { "meal_id": "2", "checked": "false" }
+      ]
+    },
+    {
+      "id": "2",
+      "year:": "2024",
+      "cw": "2",
+      "meals": [
+        { "meal_id": "2", "checked": "true" }
+      ]
+    }
+  ]
+}
