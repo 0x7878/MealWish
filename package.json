@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "api": "json-server --watch fake_db.json --port 8000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
