@@ -14,14 +14,31 @@ import MealCard from './components/meal-card';
 
 import Container from '@mui/material/Container';
 import { Card, CardContent, Typography } from '@mui/material';
+import api_url from './config';
 
 function App() {
   const [user, setUser] = React.useState<any>({ name: "loading..."});
+  const [meals, setMeals] = React.useState<any[]>([]);
   const eventEmitter = React.useContext(HassContext);
+
+ //get all data from plan for current week
+ React.useEffect(() => {
+  async function fetchData() {
+    const today = new Date() as any;
+    const currentWeek = today.getWeek();
+    const year = today.getFullYear();
+    // const endpoint = api_url + "plan?year=" + year + "&cw=" + currentWeek;
+    const endpoint = api_url + "meals_in_plan?_embed=meal&_embed=plan&plan.year=" + year + "&plan.cw=" + currentWeek;
+    const data = await fetch(endpoint).then(response => response.json());
+    setMeals(data);
+  }
+  fetchData();
+
+ }, []); 
 
   React.useEffect(() => {
     const handleUserChanged = (hass: any) => {
-      if (user.name != hass.user.name) {
+      if (user.name !== hass.user.name) {
         setUser(hass.user);
       }
     }
@@ -31,47 +48,23 @@ function App() {
     return () => {
       eventEmitter.off('hassChanged', handleUserChanged);
     };
-  }, [user]);
-
+  }, [eventEmitter, user]);
+console.info("render app")
+console.dir(meals)
   return (
     <>
       <MenuAppBar />
       <Box style={{ overflow: 'auto', height: 'calc(100vh - 57px)', marginTop: "56px" }} sx={{ bgcolor: 'background.paper', }}>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    content of hass.user
-                  </Typography>
-                  <Typography variant="body2">
-                    {user ? user.name : ""}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MealCard />
-            </Grid>
+           {meals && meals.map((entry: any, index: number) => {
+              return (
+                <Grid item xs={12} md={4} key={index}>
+                  <MealCard user={entry.added_by} meal={entry.meal.name} image={entry.meal.image_url} />
+                </Grid>
+              )
+            }
+           )}  
           </Grid>
         </Container>
       </Box>

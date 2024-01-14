@@ -1,5 +1,5 @@
 {
-  "meal": [ 
+  "meals": [ 
     {
       "id": "1",
       "name": "Burger",
@@ -8,7 +8,7 @@
     {
       "id": "2",
       "name": "Pizza",
-      "image_url": "https://www.themealdb.com/images/media/meals/xrptpq1487347049.jpg"
+      "image_url": "https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg"
     },
     {
       "id": "3",
@@ -16,23 +16,22 @@
       "image_url": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg"
     }
   ],
-  "plan": [
+  "plans": [
     {
       "id": "1",
-      "year:": "2024",
-      "cw": "1",
-      "meals": [
-        { "meal_id": "1", "checked": "true" },
-        { "meal_id": "2", "checked": "false" }
-      ]
+      "year": "2024",
+      "cw": "1"
     },
+    
     {
       "id": "2",
-      "year:": "2024",
-      "cw": "2",
-      "meals": [
-        { "meal_id": "2", "checked": "true" }
-      ]
+      "year": "2024",
+      "cw": "2"
     }
-  ]
+  ],
+"meals_in_plan": [
+        { "id": "1", "mealId": "2", "planId": "1", "checked": "true", "added_by": "Laura Derhila"},
+        { "id": "2", "mealId": "1", "planId": "2", "checked": "true", "added_by": "Anton Darrias" },
+        { "id": "3", "mealId": "2", "planId": "2", "checked": "false", "added_by": "Laura Derhila" }
+    ]
 }
