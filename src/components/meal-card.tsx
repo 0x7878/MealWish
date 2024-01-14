@@ -7,7 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { blue, pink, red } from '@mui/material/colors';
@@ -45,7 +44,7 @@ export default function MealCard(props: any) {
  
  const { user, meal, image } = props;
 
-  const username = user ? user[0].toUpperCase() : "?";
+  const username = user ? user[0] ? user[0].toUpperCase() : "?" : "?";
   const avatarColor = username==="M" ? red[500] : username==="N" ? pink[500] : blue[500];
 
   //#region base64 image
