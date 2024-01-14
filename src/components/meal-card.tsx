@@ -109,11 +109,6 @@ export default function MealCard(props: any) {
         height="194"
         image={imageUrl}
       />
-      <CardActions disableSpacing>
-        <IconButton aria-label="mark as confirmed">
-          <CheckBoxOutlineBlankIcon />
-        </IconButton>
-      </CardActions>
     </Card>
   );
 }
