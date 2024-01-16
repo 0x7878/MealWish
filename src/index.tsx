@@ -81,7 +81,7 @@ class MealWish extends HTMLElement {
 customElements.define("meal-wish",MealWish)
 
 //Provide a fake hass object for testing
-setTimeout(() => {
-  const app = document.getElementsByTagName("meal-wish")[0] as any;
-  app.hass = {user: {name: "Anton Davaria"}};
-}, 2000);
+// setTimeout(() => {
+//   const app = document.getElementsByTagName("meal-wish")[0] as any;
+//   app.hass = {user: {name: "Anton Davaria"}};
+// }, 2000);
