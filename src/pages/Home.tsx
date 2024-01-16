@@ -11,13 +11,17 @@ import Container from "@mui/material/Container";
 import api_url from "../config";
 import { Fab, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from "react-router-dom";
 
 function Home(props: any) {
-  const { pageChanged } = props;
+  // const { pageChanged } = props;
 
-  const [user, setUser] = React.useState<any>({ name: "loading..." });
+  const navigate = useNavigate();
+
   const [meals, setMeals] = React.useState<any[]>([]);
-  const eventEmitter = React.useContext(HassContext);
+  const {eventEmitter, hass} = React.useContext(HassContext);
+  const initialName = hass?.user.name || "loading...";
+  const [user, setUser] = React.useState<any>({ name: initialName });
 
   const [cwDate, setCwDate] = React.useState<{
     cw: number;
@@ -34,8 +38,14 @@ function Home(props: any) {
         cwDate.year +
         "&plan.cw=" +
         cwDate.cw;
-      const data = await fetch(endpoint).then((response) => response.json());
-      setMeals(data);
+        try {
+          const data = await fetch(endpoint).then((response) => response.json());
+          setMeals(data);
+        }
+        catch (e) {
+          //todo show dialog / modal or something
+          console.log(e);
+        }
     }
     fetchData();
   }, [cwDate]);
@@ -102,7 +112,7 @@ function Home(props: any) {
           </Grid>
         </Container>
       <Fab color="secondary" aria-label="edit" sx={{position: 'absolute',  bottom: 16,  right: 16,}}
-      onClick={() => {pageChanged("mealList")}}>
+      onClick={() => {navigate("meal-list")}}>
         <AddIcon />
       </Fab>
       </Box>

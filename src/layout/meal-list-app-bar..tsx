@@ -9,7 +9,7 @@ import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import { HassContext } from "../HassContext";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Icon } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 declare global {
   namespace JSX {
@@ -20,11 +20,11 @@ declare global {
 }
 
 export default function MealListAppBar(props: any) {
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const ref = React.useRef<any>(null);
-  const narrowRef = React.useRef<any>(undefined);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,8 +34,16 @@ export default function MealListAppBar(props: any) {
     setAnchorEl(null);
   };
 
-  const eventEmitter = React.useContext(HassContext);
+  const {eventEmitter, hass, narrow} = React.useContext(HassContext);
 
+  // trigger once on load
+  React.useEffect(() => {
+    if(hass && narrow) {
+      ref.current.hass = hass;
+      ref.current.narrow = narrow;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
 
   React.useEffect(() => {
@@ -54,7 +62,7 @@ export default function MealListAppBar(props: any) {
       eventEmitter.off("narrowChanged", handlenarrowChanged);
       eventEmitter.off("hassChanged", handlehassChanged);
     };
-  }, [narrowRef.current, ref.current]);
+  }, [eventEmitter]);
 
   return (
     <>
@@ -68,7 +76,7 @@ export default function MealListAppBar(props: any) {
       >
         <Toolbar style={{ minHeight: "55px" }}>
           <ha-menu-button slot="navigationIcon" ref={ref} />
-          <IconButton size="large" aria-label="back" color="inherit" onClick={() => props.pageChanged("home")}>
+          <IconButton size="large" aria-label="back" color="inherit" onClick={() => navigate("/")}>
             <ArrowBackIcon />
           </IconButton>
           <Typography

@@ -10,6 +10,7 @@ import { HassContextProvider } from './HassContext';
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import "./lib/date.extension";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 class MealWish extends HTMLElement {
 
@@ -60,7 +61,15 @@ class MealWish extends HTMLElement {
         <CacheProvider value={cache}>
           <ThemeProvider theme={shadowTheme}>
             <HassContextProvider appInstance={this}>
-              <App />
+              <BrowserRouter basename="/">
+                <Routes>
+                  <Route path="mealwish/*" element={<App />} />
+                  <Route
+                    path="/*"
+                    element={<Navigate to="/mealwish" replace />}
+                  />
+                </Routes>
+              </BrowserRouter>
             </HassContextProvider>
           </ThemeProvider>
         </CacheProvider>

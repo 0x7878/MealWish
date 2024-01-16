@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { HassContext } from "../HassContext";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 
 declare global {
   namespace JSX {
@@ -27,7 +27,6 @@ export default function MenuAppBar(props: any) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const ref = React.useRef<any>(null);
-  const narrowRef = React.useRef<any>(undefined);
 
   const today = new Date() as any;
   const currentWeek = today.getWeek();
@@ -42,11 +41,16 @@ export default function MenuAppBar(props: any) {
     setAnchorEl(null);
   };
 
-  const eventEmitter = React.useContext(HassContext);
+  const {eventEmitter, hass, narrow} = React.useContext(HassContext);
 
   // trigger once on load
   React.useEffect(() => {
+    if(hass && narrow) {
+      ref.current.hass = hass;
+      ref.current.narrow = narrow;
+    }
     changeWeek(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -65,7 +69,7 @@ export default function MenuAppBar(props: any) {
       eventEmitter.off("narrowChanged", handlenarrowChanged);
       eventEmitter.off("hassChanged", handlehassChanged);
     };
-  }, [narrowRef.current, ref.current]);
+  }, [eventEmitter]);
 
 
   function changeWeek(arg0: number) {
