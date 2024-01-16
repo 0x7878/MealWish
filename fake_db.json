@@ -3,17 +3,95 @@
     {
       "id": "1",
       "name": "Burger",
-      "image_url": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg"
+      "image_url": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg",
+      "sectionId" : "3"
     },
     {
       "id": "2",
       "name": "Pizza",
-      "image_url": "https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg"
+      "image_url": "https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg",
+      "sectionId" : "3"
     },
     {
       "id": "3",
       "name": "Pasta",
-      "image_url": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg"
+      "image_url": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+      "sectionId" : "6"
+    },
+    {
+      "id": "4",
+      "name": "Chicken",
+      "image_url": "",
+      "sectionId" : "1"
+    },
+    {
+      "id": "5",
+      "name": "Fish",
+      "image_url": "",
+      "sectionId" : "5"
+    },  
+    {
+      "id": "6",
+      "name": "Salad",
+      "image_url": "",
+      "sectionId" : "4"
+    },
+    {
+      "id": "7",
+      "name": "Soup",
+      "image_url": "",
+      "sectionId" : "4"
+    },
+    {
+      "id": "8",
+      "name": "Sandwich",
+      "image_url": "",
+      "sectionId" : "3"
+    },
+    { 
+      "id": "9",
+      "name": "Pancake",
+      "image_url": "",
+      "sectionId" : "2"
+    },
+    {
+      "id": "10",
+      "name": "Omelette",
+      "image_url": "",
+      "sectionId" : "2"
+    }
+  ],
+  "sections": [
+    {
+      "id": "1",
+      "name": "meat"
+    },
+    {
+      "id": "2",
+      "name": "low-carb"
+    },
+    {
+      "id": "3",
+      "name": "fast-food"
+    },
+    {
+      "id": "4",
+      "name": "vegetarian"
+    },
+    {
+      "id": "5",
+      "name": "fish"
+    },
+    {
+      "id": "6",
+      "name": "Noodles"
+    }
+  ],
+  "wishes": [
+    {
+      "id": "1",
+      "mealId": "1",
+      "added_by": "Laura Derhila"
     }
   ],
   "plans": [
@@ -26,12 +104,13 @@
     {
       "id": "2",
       "year": "2024",
-      "cw": "2"
+      "cw": "3"
     }
   ],
 "meals_in_plan": [
-        { "id": "1", "mealId": "2", "planId": "1", "checked": "true", "added_by": "Laura Derhila"},
-        { "id": "2", "mealId": "1", "planId": "2", "checked": "true", "added_by": "Anton Darrias" },
-        { "id": "3", "mealId": "2", "planId": "2", "checked": "false", "added_by": "Laura Derhila" }
+        { "id": "1", "mealId": "2", "planId": "1","added_by": "Laura Derhila"},
+        { "id": "2", "mealId": "1", "planId": "2","added_by": "Anton Darrias" },
+        { "id": "3", "mealId": "2", "planId": "2", "added_by": "Laura Derhila" },
+        { "id": "4", "mealId": "4", "planId": "2", "added_by": "Laura Derhila" }
     ]
 }
