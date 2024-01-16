@@ -23,10 +23,14 @@ function Home(props: any) {
   const initialName = hass?.user.name || "loading...";
   const [user, setUser] = React.useState<any>({ name: initialName });
 
+  const today = new Date() as any;
+  const currentWeek = today.getWeek();
+  const year = today.getFullYear();
+
   const [cwDate, setCwDate] = React.useState<{
     cw: number;
     year: number;
-  } | null>();
+  }>({ cw: currentWeek, year: year });
 
   //get all data from plan for current week
   React.useEffect(() => {
@@ -70,7 +74,7 @@ function Home(props: any) {
 
   return (
     <>
-      <MenuAppBar cwDateChanged={cwDateChanged} />
+      <MenuAppBar currentWeek={currentWeek} year={year} cwDateChanged={cwDateChanged} />
       <Box
         style={{
           overflow: "auto",

@@ -20,17 +20,13 @@ declare global {
   }
 }
 
-export default function MenuAppBar(props: any) {
-
-  const {cwDateChanged} = props;
+export default function MenuAppBar({currentWeek, year, cwDateChanged}: any) {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const ref = React.useRef<any>(null);
 
-  const today = new Date() as any;
-  const currentWeek = today.getWeek();
-  const year = today.getFullYear();
+ 
   const [cwDate, setCwDate] = React.useState<{cw: number, year: number}>({cw: currentWeek, year: year});
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,7 +45,7 @@ export default function MenuAppBar(props: any) {
       ref.current.hass = hass;
       ref.current.narrow = narrow;
     }
-    changeWeek(0);
+    // changeWeek(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
