@@ -116,7 +116,7 @@ function Home(props: any) {
           </Grid>
         </Container>
       <Fab color="secondary" aria-label="edit" sx={{position: 'absolute',  bottom: 16,  right: 16,}}
-      onClick={() => {navigate("meal-list")}}>
+      onClick={() => {navigate("meal-list", {state: {"cw": cwDate.cw, "year": cwDate.year}})}}>
         <AddIcon />
       </Fab>
       </Box>
