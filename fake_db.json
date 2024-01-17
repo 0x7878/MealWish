@@ -64,33 +64,55 @@
   "sections": [
     {
       "id": "1",
-      "name": "meat"
+      "name": "Meat",
+      "icon": "meat"
     },
     {
       "id": "2",
-      "name": "low-carb"
+      "name": "Low-Carb",
+      "icon": ""
     },
     {
       "id": "3",
-      "name": "fast-food"
+      "name": "Fast-Food",
+      "icon": "fastfood"
     },
     {
       "id": "4",
-      "name": "vegetarian"
+      "name": "Vegetarian",
+      "icon": ""
     },
     {
       "id": "5",
-      "name": "fish"
+      "name": "Fish",
+      "icon": "fish"
+
     },
     {
       "id": "6",
-      "name": "Noodles"
+      "name": "Noodles",
+      "icon": "noodles"
     }
   ],
   "wishes": [
     {
       "id": "1",
       "mealId": "1",
+      "added_by": "Laura Derhila"
+    },
+    {
+      "id": "2",
+      "mealId": "2",
+      "added_by": "Anton Darrias"
+    },
+    {
+      "id": "3",
+      "mealId": "3",
+      "added_by": "Laura Derhila"
+    },
+    {
+      "id": "4",
+      "mealId": "4",
       "added_by": "Laura Derhila"
     }
   ],
