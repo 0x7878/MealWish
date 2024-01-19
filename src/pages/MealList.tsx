@@ -234,10 +234,12 @@ function MealList() {
         body: JSON.stringify(mealInPlan),
       });
        const data = await response.json();
-      setSnackbar({ data: data.id, showAction:true, open: true, message: "Added to the list" });
+       const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
+      setSnackbar({ data: data.id, showAction:true, open: true, message: "Added  \""+ mealName + "\" to the list" });
     }else
     {
-      setSnackbar({ showAction:false, open: true, message: "Already in the current plan" });
+      const mealName = meals.find((meal) => meal.id === data[0].mealId)?.name; 
+      setSnackbar({ showAction:false, open: true, message: `${mealName} is already in the current plan` });
       // console.log("meal found");
     }
   }
