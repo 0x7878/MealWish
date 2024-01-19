@@ -1,20 +1,52 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+import { HassContext } from "../HassContext";
+import MealListAppBar from "../layout/meal-list-app-bar";
+import api_url from "../config";
+import placeholder from "../other/base64_placeholder";
+
+//#region Material Components
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { Avatar, Divider, Drawer, Fab, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, ListSubheader, SwipeableDrawer, Toolbar, Typography } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import MealListAppBar from "../layout/meal-list-app-bar";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Drawer,
+  Fab,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Snackbar,
+  SwipeableDrawer,
+  Toolbar,
+} from "@mui/material";
+//#endregion
 
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import { DeliveryDining, DinnerDining, Fastfood, Height, KebabDining, LocalPizza, Restaurant,  SetMeal, SoupKitchen } from "@mui/icons-material";
-import api_url from "../config";
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import CommentIcon from '@mui/icons-material/Comment';
-import placeholder from "../other/base64_placeholder";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+//#region Material Icons
+import {
+  DeliveryDining,
+  DinnerDining,
+  Fastfood,
+  KebabDining,
+  LocalPizza,
+  Restaurant,
+  SetMeal,
+  SoupKitchen,
+} from "@mui/icons-material";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import AddIcon from "@mui/icons-material/Add";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CloseIcon from "@mui/icons-material/Close";
+//#endregion
 
 const drawerWidth = 250;
 const toolbarHeight = 55;
@@ -23,86 +55,200 @@ type Category = {
   id: number;
   name: string;
   icon: string;
-}
+};
 
 type Meal = {
-  id: number,
-  name: string, 
-  image_url: string,
-  sectionId : number,
-  section?: Category
-}
+  id: number;
+  name: string;
+  image_url: string;
+  sectionId: number;
+  section?: Category;
+};
 
 type Wish = {
- id: number, 
- mealId: number,
- added_by: string,
- meal: Meal
-}
+  id: number;
+  mealId: number;
+  added_by: string;
+  meal: Meal;
+};
+
+type Plan = {
+  id?: string;
+  year: number;
+  cw: number;
+};
 
 function MealList() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [wishes, setWishes] = React.useState<Wish[]>([]);
   const [meals, setMeals] = React.useState<Meal[]>([]);
+  const [snackbar, setSnackbar] = React.useState<{
+    open: boolean;
+    message: string;
+    showAction?: boolean;
+    data?: any;
+  }>({ open: false, showAction:true, message: "Added to the list" });
 
+  const {eventEmitter, hass} = React.useContext(HassContext);
+  
   const listRef = React.useRef<HTMLUListElement>(null);
+  const planId = React.useRef<string>("");
 
-  const toggleDrawer =(open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
+  // @todo: get user from hass correctly (Hass is not filled in the context here)
+  const userRef = React.useRef<string>(  hass?.user.name || "unknown" );
+
+  const location = useLocation();
+
+  const cw = location?.state?.cw || 0;
+  const year = location?.state?.year || 0;
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event &&
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
 
-      setDrawerOpen( open );
+      setDrawerOpen(open);
     };
 
-    useEffect(() => {
-      try {
-        const fetchData = async () => {
-         const endpoint = api_url + "sections";
-         const data = await fetch(endpoint).then((response) => response.json());
-         setCategories(data);
-        }
-        fetchData();
-      }
-      catch (e) {
-        console.log(e);
-      }
-    }, []);
-  
-    useEffect(() => {
-      try {
-        const fetchData = async () => {
-         const endpoint = api_url + "wishes?_embed=meal";
-         const data = await fetch(endpoint).then((response) => response.json());
-         setWishes(data);
-        }
-        fetchData();
-      }
-      catch (e) {
-        console.log(e);
-      }
-    }, []);
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
-    useEffect(() => {
-      try {
-        const fetchData = async () => {
-         const endpoint = api_url + "meals?_embed=section";
-         const data = await fetch(endpoint).then((response) => response.json());
-         setMeals(data);
-        }
-        fetchData();
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const endpoint = api_url + "sections";
+        const data = await fetch(endpoint).then((response) => response.json());
+        setCategories(data);
+      };
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const endpoint = api_url + "wishes?_embed=meal";
+        const data = await fetch(endpoint).then((response) => response.json());
+        setWishes(data);
+      };
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const endpoint = api_url + "meals?_embed=section";
+        const data = await fetch(endpoint).then((response) => response.json());
+        setMeals(data);
+      };
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const handleUserChanged = (hass: any) => {
+      if (userRef.current !== hass.user.name) {
+        console.log("user changed");
+        console.log(hass.user.name);
+        userRef.current = hass.user.name;
       }
-      catch (e) {
-        console.log(e);
-      }
-    }, []);
+    };
+
+    eventEmitter.on("hassChanged", handleUserChanged);
+
+    return () => {
+      eventEmitter.off("hassChanged", handleUserChanged);
+    };
+  }, [eventEmitter]);
+
+  const getOrCreatePlan = async () => {
+    //check if current cw is in plan
+    const endpoint = api_url + "plans?year="+year + "&cw=" + cw;
+    if (cw === 0 || year === 0) {
+      console.log("no cw or year");
+      return;
+    }
+    const data = await fetch(endpoint).then((response) => response.json());
+    if (data.length === 0) {
+      console.log("no plan found");
+     //Create a new plan
+      var plan: Plan = {
+        year: year,
+        cw: cw,
+      };
+      const endpoint = api_url + "plans";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(plan),
+      });
+      const data = await response.json();
+      planId.current = data.id;
+    }else {
+      planId.current = data[0].id;
+    }
+  };
+
+  const addToList = async (meal_id: number) => {
+    var user = userRef.current;
+    await getOrCreatePlan();
+    //check if meal is already in plan
+    const endpoint = api_url + "meals_in_plan?planId="+planId.current + "&mealId=" + meal_id;
+    // console.log(endpoint);
+    const data = await fetch(endpoint).then((response) => response.json());
+    if (data.length === 0) {
+      // console.log("no meal found");
+     //Create a new plan
+      var mealInPlan = {
+        planId: planId.current,
+        mealId: meal_id,
+        added_by: user
+      };
+      const endpoint = api_url + "meals_in_plan";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mealInPlan),
+      });
+       const data = await response.json();
+      setSnackbar({ data: data.id, showAction:true, open: true, message: "Added to the list" });
+    }else
+    {
+      setSnackbar({ showAction:false, open: true, message: "Already in the current plan" });
+      // console.log("meal found");
+    }
+  }
+
+  const deleteMealInList = async () => {
+    const endpoint = api_url + "meals_in_plan/" + snackbar.data;
+    await fetch(endpoint, {
+      method: "DELETE",
+    });
+    setSnackbar({ ...snackbar, open: false });
+  }
 
   const getIconComponent = (name: string) => {
     switch (name) {
@@ -123,31 +269,31 @@ function MealList() {
       default:
         return <Restaurant />;
     }
-  }
+  };
 
   const scrollTo = (id: string) => {
     const element = listRef.current?.querySelector(`#${id}`);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
-  }
-  
+  };
+
   const list = () => (
     <Box
-      sx={{ width:  (drawerWidth -1) }}
+      sx={{ width: drawerWidth - 1 }}
       role="presentation"
-      onClick={toggleDrawer( false)}
-      onKeyDown={toggleDrawer( false)}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
-       <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => scrollTo("Wishes")}>
-              <ListItemIcon>
-                <CardGiftcardIcon /> 
-              </ListItemIcon>
-              <ListItemText primary={"Wishes"} />
-            </ListItemButton>
-          </ListItem>
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => scrollTo("Wishes")}>
+            <ListItemIcon>
+              <CardGiftcardIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Wishes"} />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
@@ -156,14 +302,30 @@ function MealList() {
             <ListItemButton onClick={() => scrollTo(category.name)}>
               <ListItemIcon>
                 {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-               {getIconComponent(category.icon)}
+                {getIconComponent(category.icon)}
               </ListItemIcon>
               <ListItemText primary={category.name} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      </Box>
+    </Box>
+  );
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={deleteMealInList}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
   );
 
   return (
@@ -224,48 +386,94 @@ function MealList() {
             subheader={<li />}
           >
             {/* list all wishes */}
-            <li id="Wishes" key={`wishes`}>
+            <li id="Wishes">
               <ul>
                 <ListSubheader>{`Wishes`}</ListSubheader>
                 {wishes.map((wish) => (
-                  <ListItemButton key={wish.id} onClick={() => console.log(listRef.current)}>
-                    <ListItemAvatar>
-                      <Avatar src={wish.meal.image_url || placeholder} />
-                    </ListItemAvatar>
-                    <ListItemText primary={wish.meal.name} />
-                  </ListItemButton>
+                  <ListItem
+                  key={wish.id}
+                    disablePadding
+                    secondaryAction={
+                      <IconButton
+                        color="warning"
+                        edge="end"
+                        aria-label="Edit meal"
+                        onClick={() => console.log("edit wish")}
+                      >
+                        <EditOutlinedIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemButton
+                      onClick={() => addToList(wish.meal.id)}
+                    >
+                      <ListItemAvatar>
+                        <Avatar src={wish.meal.image_url || placeholder} />
+                      </ListItemAvatar>
+                      <ListItemText primary={wish.meal.name} />
+                    </ListItemButton>
+                  </ListItem>
                 ))}
               </ul>
             </li>
             {/* list all meals sorted by section */}
-            {categories.map((category) => (
-              <li id={category.name} key={category.id}>
+            {categories.map((category, index) => (
+              <li id={category.name} key={category.id + index}>
                 <ul>
                   <ListSubheader>{category.name}</ListSubheader>
-                  {meals.filter((meal) => meal.sectionId === category.id).map((meal) => (
-                  <ListItem
-                  secondaryAction={
-                    <IconButton edge="end" aria-label="Add to wishlist">
-                      <FavoriteBorderOutlinedIcon />
-                    </IconButton>
-                  }
-                  disablePadding
-                >
-                  <ListItemButton>
-                    <ListItemAvatar>
-                      <Avatar src={meal.image_url || placeholder} />
-                    </ListItemAvatar>
-                    <ListItemText primary={meal.name} />
-                  </ListItemButton>
-                </ListItem>
-                  ))}
+                  {meals
+                    .filter((meal) => meal.sectionId === category.id)
+                    .map((meal) => (
+                      <ListItem
+                        key={meal.id}
+                        secondaryAction={
+                          <>
+                            <IconButton
+                              color="warning"
+                              edge="end"
+                              aria-label="Edit meal"
+                              onClick={() => console.log("edit wish")}
+                            >
+                              <EditOutlinedIcon />
+                            </IconButton>
+                            {wishes.find((wish) => wish.mealId === meal.id) ? (
+                              <IconButton
+                                edge="end"
+                                color="error"
+                                aria-label="Already in wishlist"
+                                onClick={() => setSnackbar({ showAction:false, open: true, message: "Already in the wish list" })}
+                              >
+                                <FavoriteIcon />
+                              </IconButton>
+                            ) : (
+                              <IconButton
+                                edge="end"
+                                color="error"
+                                aria-label="Add to wishlist"
+                                onClick={() => console.log("Add to wishlist")}
+                              >
+                                <FavoriteBorderOutlinedIcon />
+                              </IconButton>
+                            )}
+                          </>
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton
+                        onClick={() => addToList(meal.id)}
+                        >
+                          <ListItemAvatar>
+                            <Avatar src={meal.image_url || placeholder} />
+                          </ListItemAvatar>
+                          <ListItemText primary={meal.name} />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
                 </ul>
               </li>
             ))}
             {/* one empty list item to fill the space */}
-            <li key={`empty`} style={{height: "48px"}}>
-              
-            </li>
+            <li key={`empty`} style={{ height: "48px" }}></li>
           </List>
         </Container>
         <Fab
@@ -276,6 +484,14 @@ function MealList() {
           <AddIcon />
         </Fab>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={snackbar.message}
+        {...(snackbar.showAction && {action})}
+      />
     </>
   );
 }
