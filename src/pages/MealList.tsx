@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { HassContext } from "../HassContext";
 import MealListAppBar from "../layout/meal-list-app-bar";
@@ -79,6 +79,10 @@ type Plan = {
 };
 
 function MealList() {
+
+
+  const navigate = useNavigate();
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [wishes, setWishes] = React.useState<Wish[]>([]);
@@ -485,6 +489,7 @@ function MealList() {
           color="secondary"
           aria-label="edit"
           sx={{ position: "absolute", bottom: 16, right: 16 }}
+          onClick={() => {navigate("add")}}
         >
           <AddIcon />
         </Fab>
