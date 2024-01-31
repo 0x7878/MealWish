@@ -125,6 +125,16 @@
       "id": "2",
       "year": "2024",
       "cw": "3"
+    },
+    {
+      "id": "45f7",
+      "year": 2024,
+      "cw": 4
+    },
+    {
+      "id": "36da",
+      "year": 2024,
+      "cw": 5
     }
   ],
   "meals_in_plan": [
@@ -163,6 +173,30 @@
       "planId": "2",
       "mealId": "3",
       "added_by": "unknown"
+    },
+    {
+      "id": "271a",
+      "planId": "45f7",
+      "mealId": "6",
+      "added_by": "unknown"
+    },
+    {
+      "id": "07e5",
+      "planId": "45f7",
+      "mealId": "4",
+      "added_by": "Anton Davaria"
+    },
+    {
+      "id": "16a9",
+      "planId": "36da",
+      "mealId": "3",
+      "added_by": "unknown"
+    },
+    {
+      "id": "5a51",
+      "planId": "36da",
+      "mealId": "1",
+      "added_by": "Anton Davaria"
     }
   ]
 }
