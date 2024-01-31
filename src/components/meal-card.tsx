@@ -14,6 +14,8 @@ import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@mui
 import placeholder from '../other/base64_placeholder';
 
 
+import api_url from "../config";
+
 export default function MealCard(props: any) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -32,6 +34,16 @@ export default function MealCard(props: any) {
 
     setOpen(false);
   };
+
+  const removeItemFromMealsInPlan = async (id: number) => {
+      const endpoint = api_url + "meals_in_plan/" + id;
+      await fetch(endpoint, {
+        method: "DELETE",
+      });
+      // props.setSnackbar({ message: props.meal +" removed", open: true });
+      props.removeMeal();      
+    // setOpen(false);
+  }
 
    // return focus to the button when we transitioned from !open -> open
    const prevOpen = React.useRef(open);
@@ -94,7 +106,7 @@ export default function MealCard(props: any) {
                     id="composition-menu"
                     aria-labelledby="composition-button"
                   >
-                    <MenuItem onClick={handleClose}>Remove</MenuItem>
+                    <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>Remove</MenuItem>
                     <MenuItem disabled={true} onClick={handleClose}>Edit</MenuItem>
                   </MenuList>
                 </ClickAwayListener>

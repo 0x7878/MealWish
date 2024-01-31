@@ -9,9 +9,10 @@ import MealCard from "../components/meal-card";
 
 import Container from "@mui/material/Container";
 import api_url from "../config";
-import { Fab, Typography } from "@mui/material";
+import { Button, Fab, Snackbar, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+
 
 function Home(props: any) {
   // const { pageChanged } = props;
@@ -22,6 +23,13 @@ function Home(props: any) {
   const {eventEmitter, hass} = React.useContext(HassContext);
   const initialName = hass?.user.name || "loading...";
   const [user, setUser] = React.useState<any>({ name: initialName });
+
+  const [snackbar, setSnackbar] = React.useState<{
+    open: boolean;
+    message: string;
+    showAction?: boolean;
+    data?: any;
+  }>({ open: false, showAction:true, message: "" });
 
   const today = new Date() as any;
   const currentWeek = today.getWeek();
@@ -72,6 +80,25 @@ function Home(props: any) {
     setCwDate(cwDate);
   };
 
+ 
+  
+
+
+
+ const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const removeMeal = (entry: any)  => {
+    setMeals(meals.filter((meal) => meal.id !== entry.id));
+    setSnackbar({ ...snackbar, message: entry.meal.name + " removed", open: true });
+  };
+
+
   return (
     <>
       <MenuAppBar currentWeek={currentWeek} year={year} cwDateChanged={cwDateChanged} />
@@ -93,6 +120,8 @@ function Home(props: any) {
                       user={entry.added_by}
                       meal={entry.meal.name}
                       image={entry.meal.image_url}
+                      id={entry.id}
+                      removeMeal={() => removeMeal(entry)}
                     />
                   </Grid>
                 );
@@ -120,6 +149,13 @@ function Home(props: any) {
         <AddIcon />
       </Fab>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={snackbar.message}
+      />
     </>
   );
 }

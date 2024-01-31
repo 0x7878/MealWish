@@ -377,6 +377,9 @@ function MealList() {
         >
           <List
             ref={listRef}
+            style={{
+              scrollbarWidth: "thin",
+            }}
             sx={{
               width: "100%",
               bgcolor: "background.paper",
