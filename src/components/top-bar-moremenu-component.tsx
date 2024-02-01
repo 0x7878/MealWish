@@ -3,7 +3,7 @@ import * as React from "react";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-
+import { useNavigate } from "react-router-dom";
 
 export default function TopBarMoreMenuComponent(props: any) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -14,7 +14,11 @@ export default function TopBarMoreMenuComponent(props: any) {
 
   const handleClose = () => {
     setAnchorEl(null);
+
   };
+
+  const navigate = useNavigate();
+
   return (
     <div>
     <IconButton
@@ -41,8 +45,8 @@ export default function TopBarMoreMenuComponent(props: any) {
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>Profile</MenuItem>
-      <MenuItem onClick={handleClose}>My account</MenuItem>
+      <MenuItem onClick={() => navigate("/mealwish/manage-categories")}>Manage Categories</MenuItem>
+      {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
     </Menu>
   </div>
   );

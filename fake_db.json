@@ -1,10 +1,10 @@
 {
   "meals": [
     {
-      "id": "1",
-      "name": "Burger",
+      "name": "Bic Mac Burger",
       "image_url": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg",
-      "sectionId": "3"
+      "sectionId": "3",
+      "id": "1"
     },
     {
       "id": "2",
@@ -43,12 +43,6 @@
       "sectionId": "4"
     },
     {
-      "id": "8",
-      "name": "Sandwich",
-      "image_url": "",
-      "sectionId": "3"
-    },
-    {
       "id": "9",
       "name": "Pancake",
       "image_url": "",
@@ -59,6 +53,12 @@
       "name": "Omelette",
       "image_url": "",
       "sectionId": "2"
+    },
+    {
+      "name": "Chin. Nudeln",
+      "image_url": "",
+      "sectionId": "54fe",
+      "id": "97d2"
     }
   ],
   "sections": [
@@ -91,6 +91,11 @@
       "id": "6",
       "name": "Noodles",
       "icon": "noodles"
+    },
+    {
+      "id": "54fe",
+      "name": "China",
+      "icon": "RamenDiningIcon"
     }
   ],
   "wishes": [
@@ -193,10 +198,10 @@
       "added_by": "unknown"
     },
     {
-      "id": "5a51",
+      "id": "636b",
       "planId": "36da",
       "mealId": "1",
-      "added_by": "Anton Davaria"
+      "added_by": "unknown"
     }
   ]
 }
