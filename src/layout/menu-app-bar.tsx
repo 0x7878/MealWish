@@ -3,14 +3,12 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { HassContext } from "../HassContext";
 import { Box } from "@mui/material";
+import TopBarMoreMenuComponent from "../components/top-bar-moremenu-component";
 
 declare global {
   namespace JSX {
@@ -22,20 +20,13 @@ declare global {
 
 export default function MenuAppBar({currentWeek, year, cwDateChanged}: any) {
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const ref = React.useRef<any>(null);
 
  
   const [cwDate, setCwDate] = React.useState<{cw: number, year: number}>({cw: currentWeek, year: year});
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {eventEmitter, hass, narrow} = React.useContext(HassContext);
 
@@ -121,36 +112,9 @@ export default function MenuAppBar({currentWeek, year, cwDateChanged}: any) {
                 <ArrowForwardIosIcon />
               </IconButton>
           </Box>
-          <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
-          </div>
+
+          <TopBarMoreMenuComponent />
+
         </Toolbar>
         <Divider />
       </AppBar>

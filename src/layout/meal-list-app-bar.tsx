@@ -3,13 +3,11 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import { HassContext } from "../HassContext";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useLocation, useNavigate } from "react-router-dom";
+import TopBarMoreMenuComponent from "../components/top-bar-moremenu-component";
 
 declare global {
   namespace JSX {
@@ -29,17 +27,9 @@ export default function MealListAppBar(props: any) {
   const cw = location?.state?.cw || 0;
   const year = location?.state?.year || 0;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const ref = React.useRef<any>(null);
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {eventEmitter, hass, narrow} = React.useContext(HassContext);
 
@@ -93,36 +83,9 @@ export default function MealListAppBar(props: any) {
           >
           Manage Meals (CW {cw} {year})
           </Typography>
-          <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>
-          </div>
+          
+          <TopBarMoreMenuComponent />
+
         </Toolbar>
         <Divider />
       </AppBar>
