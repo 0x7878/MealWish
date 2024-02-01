@@ -8,6 +8,11 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormHelperText,
   Grid,
@@ -21,7 +26,9 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import api_url from "../config";
 import { SaveOutlined } from "@mui/icons-material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 const toolbarHeight = 55;
@@ -45,17 +52,48 @@ interface Meal {
 }
 
 export default function AddMeal(props: any) {
+  const { id } = useParams();
+
   const [category, setCategory] = React.useState("");
   const [categories, setCategories] = React.useState<any[]>([]);
   const [name, setName] = React.useState("");
+  const [imageURL, setImageURL] = React.useState("");
   const [categoryTouched, setCategoryTouched] = React.useState(false);
   const [nameTouched, setNameTouched] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const navigate = useNavigate();
 
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
+
+const handleClickOpen = () => {
+  setOpen(true);
+};
+
+const handleClose = () => {
+  setOpen(false);
+};
+  //Get meal from API
+  React.useEffect(() => {
+    async function fetchData() {
+      const endpoint = api_url + "meals/" + id;
+      try {
+        const data = await fetch(endpoint).then((response) => response.json());
+        setName(data.name);
+        setCategory(data.sectionId);
+        setImageURL(data.image_url);
+      } catch (e) {
+        //todo show dialog / modal or something
+        console.log(e);
+      }
+    }
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
 
   //Get all sections from API
   React.useEffect(() => {
@@ -72,6 +110,23 @@ export default function AddMeal(props: any) {
     fetchData();
   }, []);
 
+  const handleDelete = () => {
+    const endpoint = api_url + "meals/" + id;
+    fetch(endpoint, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log("Success:", data);
+        // setName("");
+        // setCategory("");
+        navigate(-1);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
   const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name) {
@@ -84,9 +139,33 @@ export default function AddMeal(props: any) {
       //Save a meal
       const meal: Meal = {
         name: name,
-        image_url: "",
+        image_url: imageURL, 
         sectionId: category,
       };
+
+      // update if id is set
+
+      if (id) {
+        const endpoint = api_url + "meals/" + id;
+        fetch(endpoint, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(meal),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log("Success:", data);
+            // setName("");
+            // setCategory("");
+            navigate(-1);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        return;
+      }
 
       const endpoint = api_url + "meals";
       fetch(endpoint, {
@@ -109,9 +188,11 @@ export default function AddMeal(props: any) {
     }
   };
 
+  const title = id ? "Edit Meal" : "Add Meal";
+
   return (
     <>
-      <DefaultAppBar title="Add Meal" />
+      <DefaultAppBar title={title} />
       <Box
         style={{
           overflow: "auto",
@@ -122,7 +203,7 @@ export default function AddMeal(props: any) {
       >
         <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
           <Card>
-            <CardHeader title="Add Meal" />
+            <CardHeader title={title} />
             <CardContent>
               <form onSubmit={handleSave}>
                 <Grid container spacing={2}>
@@ -180,7 +261,19 @@ export default function AddMeal(props: any) {
                     </Button>
                   </Grid>
 
-                  <Grid item xs={4}></Grid>
+                  <Grid item xs={4} 
+                        style={{ textAlign: "center" }} >
+                    {id && (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        startIcon={<DeleteForeverIcon />}
+                        onClick={handleClickOpen}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Grid>
                   <Grid item xs={4} style={{ textAlign: "right" }}>
                     <Button
                       variant="contained"
@@ -197,6 +290,27 @@ export default function AddMeal(props: any) {
           </Card>
         </Container>
       </Box>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action will permanently delete the meal. Are you sure you want to proceed?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

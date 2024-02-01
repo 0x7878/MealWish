@@ -120,6 +120,7 @@ function Home(props: any) {
                       user={entry.added_by}
                       meal={entry.meal.name}
                       image={entry.meal.image_url}
+                      meal_id={entry.meal.id}
                       id={entry.id}
                       removeMeal={() => removeMeal(entry)}
                     />

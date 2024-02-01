@@ -12,13 +12,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { blue, pink, red } from '@mui/material/colors';
 import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@mui/material';
 import placeholder from '../other/base64_placeholder';
-
+import { useNavigate } from "react-router-dom";
 
 import api_url from "../config";
+import { Navigate } from 'react-router-dom';
 
 export default function MealCard(props: any) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
+
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -107,7 +110,7 @@ export default function MealCard(props: any) {
                     aria-labelledby="composition-button"
                   >
                     <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>Remove</MenuItem>
-                    <MenuItem disabled={true} onClick={handleClose}>Edit</MenuItem>
+                    <MenuItem onClick={() => navigate("meal-list/edit/" + props.meal_id)}>Edit</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

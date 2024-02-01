@@ -407,7 +407,7 @@ function MealList() {
                         color="warning"
                         edge="end"
                         aria-label="Edit meal"
-                        onClick={() => console.log("edit wish")}
+                        onClick={() => navigate("edit/"+wish.meal.id)}
                       >
                         <EditOutlinedIcon />
                       </IconButton>
@@ -441,7 +441,7 @@ function MealList() {
                               color="warning"
                               edge="end"
                               aria-label="Edit meal"
-                              onClick={() => console.log("edit wish")}
+                              onClick={() => navigate("edit/"+meal.id)}
                             >
                               <EditOutlinedIcon />
                             </IconButton>

@@ -16,6 +16,7 @@ function App() {
       <Route path="/" element={ <Home/> } />
       <Route path="meal-list" element={ <MealList/> } />
       <Route path="meal-list/add" element={ <AddMeal/> } />
+      <Route path="meal-list/edit/:id" element={ <AddMeal/> } />
     </Routes>
   );
 }
