@@ -256,6 +256,53 @@ function MealList() {
     setSnackbar({ ...snackbar, open: false });
   }
 
+  const removeFromWishList = (wishId: number)  => {
+    const endpoint = api_url + "wishes/" + wishId;
+    fetch(endpoint, {
+      method: "DELETE",
+    });
+    //remove from list
+    const newWishes = wishes.filter((wish) => wish.id !== wishId);
+    setWishes(newWishes);
+    setSnackbar({ ...snackbar, showAction:false, message: "Removed from the wish list", open: true });
+  }
+
+const addToWishList = async (mealId: number) => {
+    var user = userRef.current;
+    //check if meal is already in plan
+    const endpoint = api_url + "wishes?mealId="+mealId;
+    const data = await fetch(endpoint).then((response) => response.json());
+    if (data.length === 0) {
+      // console.log("no meal found");
+     //Create a new plan
+      var wish = {
+        mealId: mealId,
+        added_by: user
+      };
+      const endpoint = api_url + "wishes";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(wish),
+      });
+       const data = await response.json();
+       const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
+      setSnackbar({ data: data.id, showAction:false, open: true, message: "Added  \""+ mealName + "\" to the wish list" });
+      //Refresh wishes
+      const endpointWishes = api_url + "wishes?_embed=meal";
+      const dataWishes = await fetch(endpointWishes).then((response) => response.json());
+      setWishes(dataWishes);
+
+    }else
+    {
+      const mealName = meals.find((meal) => meal.id === data[0].mealId)?.name; 
+      setSnackbar({ showAction:false, open: true, message: `${mealName} is already in the wish list` });
+      // console.log("meal found");
+    }
+  }
+
   const getIconComponent = (name: string) => {
     switch (name) {
       case "meat":
@@ -403,6 +450,7 @@ function MealList() {
                   key={wish.id}
                     disablePadding
                     secondaryAction={
+                      <>
                       <IconButton
                         color="warning"
                         edge="end"
@@ -411,10 +459,23 @@ function MealList() {
                       >
                         <EditOutlinedIcon />
                       </IconButton>
+                      <IconButton
+                        edge="end"
+                        color="error"
+                        aria-label="Remove from wishlist"
+                        onClick={() => removeFromWishList(wish.id)}
+                      >
+                        <FavoriteIcon />
+                      </IconButton>
+                      </>
                     }
                   >
                     <ListItemButton
-                      onClick={() => addToList(wish.meal.id)}
+                      onClick={() => {
+                        addToList(wish.meal.id); 
+                        removeFromWishList(wish.id);
+                      }
+                    }
                     >
                       <ListItemAvatar>
                         <Avatar src={wish.meal.image_url || placeholder} />
@@ -459,7 +520,7 @@ function MealList() {
                                 edge="end"
                                 color="error"
                                 aria-label="Add to wishlist"
-                                onClick={() => console.log("Add to wishlist")}
+                                onClick={() => addToWishList(meal.id)}
                               >
                                 <FavoriteBorderOutlinedIcon />
                               </IconButton>
