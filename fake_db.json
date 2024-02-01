@@ -53,13 +53,8 @@
       "name": "Omelette",
       "image_url": "",
       "sectionId": "2"
-    },
-    {
-      "name": "Chin. Nudeln",
-      "image_url": "",
-      "sectionId": "54fe",
-      "id": "97d2"
     }
+
   ],
   "sections": [
     {
@@ -91,12 +86,8 @@
       "id": "6",
       "name": "Noodles",
       "icon": "noodles"
-    },
-    {
-      "id": "54fe",
-      "name": "China",
-      "icon": "RamenDiningIcon"
     }
+
   ],
   "wishes": [
     {
