@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Meal Wish",
+  "name": "Meal Wish - Your Personal Meal Planner",
   "icons": [
     {
       "src": "favicon.ico",
