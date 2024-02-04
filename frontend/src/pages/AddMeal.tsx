@@ -47,6 +47,7 @@ const VisuallyHiddenInput = styled("input")({
 interface Meal {
   id?: string;
   name: string;
+  description?: string;
   image_url: string;
   sectionId: string;
 }
@@ -61,6 +62,12 @@ export default function AddMeal(props: any) {
   const [categoryTouched, setCategoryTouched] = React.useState(false);
   const [nameTouched, setNameTouched] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [description, setDescription] = React.useState("");
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   const navigate = useNavigate();
 
@@ -84,6 +91,7 @@ const handleClose = () => {
         setName(data.name);
         setCategory(data.sectionId);
         setImageURL(data.image_url);
+        setDescription(data.description);
       } catch (e) {
         //todo show dialog / modal or something
         console.log(e);
@@ -127,8 +135,22 @@ const handleClose = () => {
       });
   }
 
-  const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (event: any) => {
     event.preventDefault();
+    var image_url = "";
+
+    if(selectedFile) {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      const result = await fetch(api_url + "upload", {
+        method: "POST",
+        body: formData,
+      }).then((response) => response.json());
+     if(result.path) {
+        image_url = api_url + result.path;
+        console.log("saved in " + api_url + result.path);
+      }
+    }
     if (!name) {
       setNameTouched(true);
     }
@@ -139,11 +161,10 @@ const handleClose = () => {
       //Save a meal
       const meal: Meal = {
         name: name,
-        image_url: imageURL, 
+        image_url: (image_url ? image_url : imageURL), 
+        description: description,
         sectionId: category,
       };
-
-      // update if id is set
 
       if (id) {
         const endpoint = api_url + "meals/" + id;
@@ -250,6 +271,16 @@ const handleClose = () => {
                       )}
                     </FormControl>
                   </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      id="description"
+                      label="Description"
+                      variant="outlined"
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                    />
+                  </Grid>
                   <Grid item xs={4}>
                     <Button
                       component="label"
@@ -257,7 +288,7 @@ const handleClose = () => {
                       startIcon={<CloudUploadIcon />}
                     >
                       Upload file
-                      <VisuallyHiddenInput type="file" />
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
                   </Grid>
 

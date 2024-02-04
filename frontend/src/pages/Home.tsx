@@ -46,7 +46,8 @@ function Home(props: any) {
       if (!cwDate) return;
       const endpoint =
         api_url +
-        "meals_in_plan?_embed=meal&_embed=plan&plan.year=" +
+        "meals_in_plan?_expand=meal&_expand=plan&plan.year=" +
+        // "meals_in_plan?_embed=meal&_embed=plan&plan.year=" + //alpha query
         cwDate.year +
         "&plan.cw=" +
         cwDate.cw;
