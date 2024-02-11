@@ -8,6 +8,7 @@ import { HassContext } from "../HassContext";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useLocation, useNavigate } from "react-router-dom";
 import TopBarMoreMenuComponent from "../components/top-bar-moremenu-component";
+import { t } from "i18next";
 
 declare global {
   namespace JSX {
@@ -74,7 +75,7 @@ export default function MealListAppBar(props: any) {
         <Toolbar style={{ minHeight: "55px" }}>
           <ha-menu-button slot="navigationIcon" ref={ref} />
           <IconButton size="large" aria-label="back" color="inherit" 
-            onClick={() => {navigate("../", {state: {"TWS": "hui","cw":cw, "year":year}})}}>
+            onClick={() => {navigate("../", {state: {"cw":cw, "year":year}})}}>
             <ArrowBackIcon />
           </IconButton>
           <Typography
@@ -82,7 +83,7 @@ export default function MealListAppBar(props: any) {
             component="div"
             sx={{ flexGrow: 1, fontSize: "17.5px", fontWeight: 400 }}
           >
-          Manage Meals (CW {cw} {year})
+          {t('Manage Meals')} ({t('CW')} {cw} {year})
           </Typography>
           
           <TopBarMoreMenuComponent />

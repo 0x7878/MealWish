@@ -80,6 +80,7 @@ import LunchDiningIcon from "@mui/icons-material/LunchDining";
 
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 const toolbarHeight = 55;
 
@@ -294,7 +295,7 @@ const ManageCategories = () => {
     setOpen(false);
   };
 
-  const title = "Manage Categories";
+  const title = t('Manage Categories');
 
   return (
     <>
@@ -315,9 +316,9 @@ const ManageCategories = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="text.secondary">
-                      Here you see a list of all categories. You can add new
-                      categories or delete existing ones. If you want to edit a
-                      category, just click on the item.
+                      {t('Here you see a list of all categories. You can add new \n' +
+                      'categories or delete existing ones. If you want to edit a \n' +
+                      'category, just click on the item.')}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -355,7 +356,7 @@ const ManageCategories = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="text.secondary">
-                      Add new category
+                      {t('Add new category')}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -368,7 +369,7 @@ const ManageCategories = () => {
                       onChange={(event) => setName(event.target.value)}
                       error={nameTouched && !name}
                       helperText={
-                        nameTouched && !name ? "This field is required" : ""
+                        nameTouched && !name ? t('This field is required') : ""
                       }
                     />
                   </Grid>
@@ -485,7 +486,7 @@ const ManageCategories = () => {
                       type="submit"
                       startIcon={<SaveOutlined />}
                     >
-                      Save
+                      {t('Save')}
                     </Button>
                   </Grid>
                 </Grid>
@@ -500,19 +501,19 @@ const ManageCategories = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t('Are you sure?')}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action will try to delete the Category if no meals are linked.
-            Are you sure you want to proceed?
+            {t('This action will try to delete the Category if no meals are linked.\n' +
+            'Are you sure you want to proceed?')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            {t('Cancel')}
           </Button>
           <Button onClick={handleDelete} color="primary" autoFocus>
-            Delete
+            {t('Delete')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -11,6 +11,7 @@ import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Typography 
 import placeholder from '../other/base64_placeholder';
 import { useNavigate } from "react-router-dom";
 import api_url from "../config";
+import { t } from 'i18next';
 
 export default function MealCard(props: any) {
 
@@ -100,8 +101,8 @@ export default function MealCard(props: any) {
                     id="composition-menu"
                     aria-labelledby="composition-button"
                   >
-                    <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>Remove from list</MenuItem>
-                    <MenuItem onClick={() => navigate("meal-list/edit/" + props.meal_id, {state: props.state})}>Edit</MenuItem>
+                    <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>{t('Remove from day')}</MenuItem>
+                    <MenuItem onClick={() => navigate("meal-list/edit/" + props.meal_id, {state: props.state})}>{t('Edit')}</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

@@ -12,11 +12,15 @@ import api_url from "../config";
 import {Fab, Snackbar, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 
+i18n.changeLanguage('de')
 
 function Home() {
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [meals, setMeals] = React.useState<any[]>([]);
   const {eventEmitter, hass} = React.useContext(HassContext);
@@ -100,7 +104,7 @@ function Home() {
 
   const removeMeal = (entry: any)  => {
     setMeals(meals.filter((meal) => meal.id !== entry.id));
-    setSnackbar({ ...snackbar, message: entry.meal.name + " removed", open: true });
+    setSnackbar({ ...snackbar, message: entry.meal.name + " " +t('removed'), open: true });
   };
 
 
@@ -145,7 +149,7 @@ function Home() {
             >
               <Grid item xs={3}>
              <Typography variant="h3" component="div" sx={{ flexGrow: 1, color: "grey", textAlign: "center"}}>
-                No meals found for this week
+                {t('No meals found for this week')}
               </Typography> 
               </Grid>
             </Grid>

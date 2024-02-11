@@ -29,6 +29,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useLocation, useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import placeholder from "../other/base64_placeholder";
+import { t } from "i18next";
 
 const toolbarHeight = 55;
 
@@ -119,7 +120,7 @@ export default function AddMeal(props: any) {
     })
       .then((response) => response.json())
       .then((_data) => {
-        navigate("../", {state: location?.state});
+        navigate(-1);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -176,6 +177,7 @@ export default function AddMeal(props: any) {
         return;
       }
 
+      //Add a new meal
       const endpoint = api_url + "meals";
       fetch(endpoint, {
         method: "POST",
@@ -186,7 +188,7 @@ export default function AddMeal(props: any) {
       })
         .then((response) => response.json())
         .then((_data) => {
-          navigate("../", {state: location?.state});
+          navigate(-1);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -194,7 +196,7 @@ export default function AddMeal(props: any) {
     }
   };
 
-  const title = id ? "Edit Meal" : "Add Meal";
+  const title = id ? t("Edit Meal") : t("Add Meal");
 
   return (
     <>
@@ -215,8 +217,10 @@ export default function AddMeal(props: any) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant="body2" color="text.secondary">
-                      Just enter the name of the meal and upload a picture of
-                      it. Please also choose a category for the meal.
+                      {t('Just enter the name of the meal and upload a picture of')}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('it. Please also choose a category for the meal.')}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -230,18 +234,18 @@ export default function AddMeal(props: any) {
                       onChange={(event) => setName(event.target.value)}
                       error={nameTouched && !name}
                       helperText={
-                        nameTouched && !name ? "This field is required" : ""
+                        nameTouched && !name ? t('This field is required') : ""
                       }
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl fullWidth error={categoryTouched && !category}>
-                      <InputLabel id="category-select">Category *</InputLabel>
+                      <InputLabel id="category-select">{t('Category')} *</InputLabel>
                       <Select
                         labelId="category-select"
                         id="category-select"
                         value={category}
-                        label="Category"
+                        label={t('Category')}
                         required
                         onChange={handleCatergoryChange}
                       >
@@ -252,7 +256,7 @@ export default function AddMeal(props: any) {
                         ))}
                       </Select>
                       {categoryTouched && !category && (
-                        <FormHelperText>This field is required</FormHelperText>
+                        <FormHelperText>{t('This field is required')}</FormHelperText>
                       )}
                     </FormControl>
                   </Grid>
@@ -260,7 +264,7 @@ export default function AddMeal(props: any) {
                     <TextField
                       fullWidth
                       id="description"
-                      label="Description"
+                      label={t('Description')}
                       variant="outlined"
                       value={description}
                       onChange={(event) => setDescription(event.target.value)}
@@ -282,7 +286,7 @@ export default function AddMeal(props: any) {
                       }}
                     >
                       <legend style={{ color: "#bcbcbc" }}>
-                        <Typography sx={{ fontSize: "13px" }}>Image</Typography>
+                        <Typography sx={{ fontSize: "13px" }}>{t('Image')}</Typography>
                       </legend>
                       <img
                         src={imageURL ? imageURL : placeholder}
@@ -315,7 +319,7 @@ export default function AddMeal(props: any) {
                         onClick={() => setShowDeleteDialog(true)}
                         sx={{ marginRight: "8px" }}
                       >
-                        Delete
+                        {t('Delete')}
                       </Button>
                     )}
                     <Button
@@ -323,7 +327,7 @@ export default function AddMeal(props: any) {
                       type="submit"
                       startIcon={<SaveOutlined />}
                     >
-                      Save
+                      {t('Save')}
                     </Button>
                   </Grid>
                 </Grid>
@@ -338,18 +342,18 @@ export default function AddMeal(props: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t('Are you sure?')}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This action will permanently delete the meal. Are you sure you want to proceed?
+            {t('This action will permanently delete the meal. Are you sure you want to proceed?')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowDeleteDialog(false)} color="primary">
-            Cancel
+            {t('Cancel')}
           </Button>
           <Button onClick={handleDelete} color="primary" autoFocus>
-            Delete
+            {t('Delete')}
           </Button>
         </DialogActions>
       </Dialog>

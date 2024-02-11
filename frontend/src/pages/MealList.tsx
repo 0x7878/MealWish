@@ -46,6 +46,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close";
+import { t } from "i18next";
 //#endregion
 
 const drawerWidth = 250;
@@ -90,7 +91,7 @@ function MealList() {
     message: string;
     showAction?: boolean;
     data?: any;
-  }>({ open: false, showAction:true, message: "Added to the list" });
+  }>({ open: false, showAction:true, message: t('Added to the list')});
 
   const {eventEmitter, hass} = React.useContext(HassContext);
   
@@ -237,11 +238,11 @@ function MealList() {
       });
        const data = await response.json();
        const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
-      setSnackbar({ data: data.id, showAction:true, open: true, message: "Added  \""+ mealName + "\" to the list" });
+      setSnackbar({ data: data.id, showAction:true, open: true, message: t("Added meal to the list", { mealName: mealName })});
     }else
     {
       const mealName = meals.find((meal) => meal.id === data[0].mealId)?.name; 
-      setSnackbar({ showAction:false, open: true, message: `${mealName} is already in the current plan` });
+      setSnackbar({ showAction:false, open: true, message: t('is already in plan', {mealName: mealName})});
       // console.log("meal found");
     }
   }
@@ -262,7 +263,7 @@ function MealList() {
     //remove from list
     const newWishes = wishes.filter((wish) => wish.id !== wishId);
     setWishes(newWishes);
-    setSnackbar({ ...snackbar, showAction:false, message: "Removed from the wish list", open: true });
+    setSnackbar({ ...snackbar, showAction:false, message: t("Removed from the wish list"), open: true });
   }
 
 const addToWishList = async (mealId: number) => {
@@ -287,7 +288,7 @@ const addToWishList = async (mealId: number) => {
       });
        const data = await response.json();
        const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
-      setSnackbar({ data: data.id, showAction:false, open: true, message: "Added  \""+ mealName + "\" to the wish list" });
+      setSnackbar({ data: data.id, showAction:false, open: true, message: t('Added meal to the list', {mealName: mealName})});
       //Refresh wishes
       const endpointWishes = api_url + "wishes?_embed=meal";
       const dataWishes = await fetch(endpointWishes).then((response) => response.json());
@@ -296,7 +297,7 @@ const addToWishList = async (mealId: number) => {
     }else
     {
       const mealName = meals.find((meal) => meal.id === data[0].mealId)?.name; 
-      setSnackbar({ showAction:false, open: true, message: `${mealName} is already in the wish list` });
+      setSnackbar({ showAction:false, open: true, message: t('is already in plan', {mealName: mealName}) });
       // console.log("meal found");
     }
   }
@@ -342,7 +343,7 @@ const addToWishList = async (mealId: number) => {
             <ListItemIcon>
               <CardGiftcardIcon />
             </ListItemIcon>
-            <ListItemText primary={"Wishes"} />
+            <ListItemText primary={t("Wishes")} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -365,8 +366,8 @@ const addToWishList = async (mealId: number) => {
 
   const action = (
     <React.Fragment>
-      <Button color="secondary" size="small" onClick={deleteMealInList}>
-        UNDO
+      <Button color="primary" size="small" onClick={deleteMealInList}>
+        {t('undo')}
       </Button>
       <IconButton
         size="small"
@@ -442,7 +443,7 @@ const addToWishList = async (mealId: number) => {
             {/* list all wishes */}
             <li id="Wishes">
               <ul>
-                <ListSubheader>{`Wishes`}</ListSubheader>
+                <ListSubheader>{t('Wishes')}</ListSubheader>
                 {wishes.map((wish) => (
                   <ListItem
                   key={wish.id}
@@ -509,7 +510,7 @@ const addToWishList = async (mealId: number) => {
                                 edge="end"
                                 color="error"
                                 aria-label="Already in wishlist"
-                                onClick={() => setSnackbar({ showAction:false, open: true, message: "Already in the wish list" })}
+                                onClick={() => setSnackbar({ showAction:false, open: true, message: t("Already in the wish list") })}
                               >
                                 <FavoriteIcon />
                               </IconButton>
