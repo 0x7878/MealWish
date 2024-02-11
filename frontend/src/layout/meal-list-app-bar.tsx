@@ -73,7 +73,8 @@ export default function MealListAppBar(props: any) {
       >
         <Toolbar style={{ minHeight: "55px" }}>
           <ha-menu-button slot="navigationIcon" ref={ref} />
-          <IconButton size="large" aria-label="back" color="inherit" onClick={() => navigate("/")}>
+          <IconButton size="large" aria-label="back" color="inherit" 
+            onClick={() => {navigate("../", {state: {"TWS": "hui","cw":cw, "year":year}})}}>
             <ArrowBackIcon />
           </IconButton>
           <Typography

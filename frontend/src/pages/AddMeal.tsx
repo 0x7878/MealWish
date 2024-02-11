@@ -26,7 +26,7 @@ import api_url from "../config";
 import { SaveOutlined } from "@mui/icons-material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import placeholder from "../other/base64_placeholder";
 
@@ -56,6 +56,7 @@ export default function AddMeal(props: any) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleFileChange = (event: any) => {
     const reader = new FileReader();
@@ -118,7 +119,7 @@ export default function AddMeal(props: any) {
     })
       .then((response) => response.json())
       .then((_data) => {
-        navigate(-1);
+        navigate("../", {state: location?.state});
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -167,7 +168,7 @@ export default function AddMeal(props: any) {
         })
           .then((response) => response.json())
           .then((_data) => {
-            navigate(-1);
+            navigate("../", {state: location?.state});
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -185,7 +186,7 @@ export default function AddMeal(props: any) {
       })
         .then((response) => response.json())
         .then((_data) => {
-          navigate(-1);
+          navigate("../", {state: location?.state});
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -197,7 +198,7 @@ export default function AddMeal(props: any) {
 
   return (
     <>
-      <DefaultAppBar title={title} />
+      <DefaultAppBar title={title} state={location?.state} />
       <Box
         style={{
           overflow: "auto",

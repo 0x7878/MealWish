@@ -79,8 +79,6 @@ type Plan = {
 };
 
 function MealList() {
-
-
   const navigate = useNavigate();
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -274,7 +272,7 @@ const addToWishList = async (mealId: number) => {
     const data = await fetch(endpoint).then((response) => response.json());
     if (data.length === 0) {
       // console.log("no meal found");
-     //Create a new plan
+      //Create a new plan
       var wish = {
         mealId: mealId,
         added_by: user

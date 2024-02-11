@@ -46,7 +46,6 @@ export default function TopBarMoreMenuComponent(props: any) {
       onClose={handleClose}
     >
       <MenuItem onClick={() => navigate("/mealwish/manage-categories")}>Manage Categories</MenuItem>
-      {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
     </Menu>
   </div>
   );

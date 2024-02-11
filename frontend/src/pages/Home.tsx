@@ -9,13 +9,12 @@ import MealCard from "../components/meal-card";
 
 import Container from "@mui/material/Container";
 import api_url from "../config";
-import { Button, Fab, Snackbar, Typography } from "@mui/material";
+import {Fab, Snackbar, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
-function Home(props: any) {
-  // const { pageChanged } = props;
+function Home() {
 
   const navigate = useNavigate();
 
@@ -31,9 +30,14 @@ function Home(props: any) {
     data?: any;
   }>({ open: false, showAction:true, message: "" });
 
+
+  const location = useLocation();
+  const loc_cw = location?.state?.cw;
+  const loc_year = location?.state?.year;
+
   const today = new Date() as any;
-  const currentWeek = today.getWeek();
-  const year = today.getFullYear();
+  const currentWeek = loc_cw || today.getWeek();
+  const year = loc_year || today.getFullYear();
 
   const [cwDate, setCwDate] = React.useState<{
     cw: number;
@@ -53,7 +57,9 @@ function Home(props: any) {
         cwDate.cw;
         try {
           const data = await fetch(endpoint).then((response) => response.json());
-          setMeals(data);
+          // since the filter is not working on the backend, we need to filter the data here
+          setMeals(data.filter((entry: any) => entry.plan.year === cwDate.year && entry.plan.cw === cwDate.cw));
+          // setMeals(data);
         }
         catch (e) {
           //todo show dialog / modal or something
@@ -63,6 +69,9 @@ function Home(props: any) {
     fetchData();
   }, [cwDate]);
 
+  /**
+   * Update user when it changes in the context
+   */
   React.useEffect(() => {
     const handleUserChanged = (hass: any) => {
       if (user.name !== hass.user.name) {
@@ -80,11 +89,6 @@ function Home(props: any) {
   const cwDateChanged = (cwDate: { cw: number; year: number }) => {
     setCwDate(cwDate);
   };
-
- 
-  
-
-
 
  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -120,9 +124,11 @@ function Home(props: any) {
                     <MealCard
                       user={entry.added_by}
                       meal={entry.meal.name}
+                      discription={entry.meal.description}
                       image={entry.meal.image_url}
                       meal_id={entry.meal.id}
                       id={entry.id}
+                      state={{ cw: cwDate.cw, year: cwDate.year }}
                       removeMeal={() => removeMeal(entry)}
                     />
                   </Grid>

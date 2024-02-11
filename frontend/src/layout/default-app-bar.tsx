@@ -67,7 +67,8 @@ export default function DefaultAppBar(props: any) {
       >
         <Toolbar style={{ minHeight: "55px" }}>
           <ha-menu-button slot="navigationIcon" ref={ref} />
-          <IconButton size="large" aria-label="back" color="inherit" onClick={() => navigate(-1)}>
+          <IconButton size="large" aria-label="back" color="inherit" 
+            onClick={() => navigate("../", {state: props.state})}>
             <ArrowBackIcon />
           </IconButton>
           <Typography
