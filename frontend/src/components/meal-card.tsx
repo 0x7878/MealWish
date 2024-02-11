@@ -1,23 +1,19 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { blue, pink, red } from '@mui/material/colors';
-import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@mui/material';
+import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Typography } from '@mui/material';
 import placeholder from '../other/base64_placeholder';
 import { useNavigate } from "react-router-dom";
-
 import api_url from "../config";
-import { Navigate } from 'react-router-dom';
 
 export default function MealCard(props: any) {
+
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
@@ -34,7 +30,6 @@ export default function MealCard(props: any) {
     ) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -45,24 +40,20 @@ export default function MealCard(props: any) {
       });
       // props.setSnackbar({ message: props.meal +" removed", open: true });
       props.removeMeal();      
-    // setOpen(false);
   }
 
-   // return focus to the button when we transitioned from !open -> open
    const prevOpen = React.useRef(open);
+   
    React.useEffect(() => {
      if (prevOpen.current === true && open === false) {
        anchorRef.current!.focus();
      }
- 
      prevOpen.current = open;
    }, [open]);
  
- const { user, meal, image } = props;
-
+  const { user, meal, image, discription} = props;
   const username = user ? user[0] ? user[0].toUpperCase() : "?" : "?";
   const avatarColor = username==="M" ? red[500] : username==="N" ? pink[500] : blue[500];
-
   const imageUrl = image ? image : placeholder;
 
   return (
@@ -109,8 +100,8 @@ export default function MealCard(props: any) {
                     id="composition-menu"
                     aria-labelledby="composition-button"
                   >
-                    <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>Remove</MenuItem>
-                    <MenuItem onClick={() => navigate("meal-list/edit/" + props.meal_id)}>Edit</MenuItem>
+                    <MenuItem onClick={() => removeItemFromMealsInPlan(props.id)}>Remove from list</MenuItem>
+                    <MenuItem onClick={() => navigate("meal-list/edit/" + props.meal_id, {state: props.state})}>Edit</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -122,6 +113,14 @@ export default function MealCard(props: any) {
         height="194"
         image={imageUrl}
       />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+            {discription.split("\n").map((i: string, key: number) => {
+              return <div style={{ minHeight: '1rem' }} key={key}>{i}</div>;
+            }
+          )}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
