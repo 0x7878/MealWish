@@ -169,7 +169,11 @@ export default function AddMeal(props: any) {
         })
           .then((response) => response.json())
           .then((_data) => {
-            navigate("../", {state: location?.state});
+            // go back home if there is a state otherwise go back to the previous page
+            if(location?.state)
+              navigate("../", {state: location?.state});
+            else
+              navigate(-1);
           })
           .catch((error) => {
             console.error("Error:", error);

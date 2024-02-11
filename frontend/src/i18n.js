@@ -38,7 +38,7 @@ const resources = {
       "Removed from the wish list": "Von der Wunschliste entfernt",
       "Already in the wish list": "Bereits in der Wunschliste",
       "removed" : "wurde entfernt",
-      "undo" : "rückgängig machen",
+      "undo" : "rückgängig",
       "Wishes": "Wünsche",
     }
   }

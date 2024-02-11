@@ -141,10 +141,11 @@ function MealList() {
     }
   }, []);
 
+  //fetch wishes
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const endpoint = api_url + "wishes?_embed=meal";
+        const endpoint = api_url + "wishes?_expand=meal";
         const data = await fetch(endpoint).then((response) => response.json());
         setWishes(data);
       };
@@ -290,7 +291,7 @@ const addToWishList = async (mealId: number) => {
        const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
       setSnackbar({ data: data.id, showAction:false, open: true, message: t('Added meal to the list', {mealName: mealName})});
       //Refresh wishes
-      const endpointWishes = api_url + "wishes?_embed=meal";
+      const endpointWishes = api_url + "wishes?_expand=meal";
       const dataWishes = await fetch(endpointWishes).then((response) => response.json());
       setWishes(dataWishes);
 
