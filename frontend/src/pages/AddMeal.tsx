@@ -1,5 +1,4 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
+import React, { useEffect, useRef, useState } from "react";
 import DefaultAppBar from "../layout/default-app-bar";
 import Card from "@mui/material/Card";
 import {
@@ -10,9 +9,8 @@ import {
   Container,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  DialogContent, DialogContentText, DialogTitle,
+  Fab,
   FormControl,
   FormHelperText,
   Grid,
@@ -23,26 +21,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import EditIcon from '@mui/icons-material/Edit';
 import api_url from "../config";
 import { SaveOutlined } from "@mui/icons-material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import placeholder from "../other/base64_placeholder";
 
 const toolbarHeight = 55;
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 interface Meal {
   id?: string;
@@ -55,35 +43,40 @@ interface Meal {
 export default function AddMeal(props: any) {
   const { id } = useParams();
 
-  const [category, setCategory] = React.useState("");
-  const [categories, setCategories] = React.useState<any[]>([]);
-  const [name, setName] = React.useState("");
-  const [imageURL, setImageURL] = React.useState("");
-  const [categoryTouched, setCategoryTouched] = React.useState(false);
-  const [nameTouched, setNameTouched] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [description, setDescription] = React.useState("");
-  const [selectedFile, setSelectedFile] = React.useState(null);
+  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [name, setName] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [categoryTouched, setCategoryTouched] = useState(false);
+  const [nameTouched, setNameTouched] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (event: any) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleFileChange = (event: any) => {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      setImageURL(e.target?.result as string);
+    };
+    reader.readAsDataURL(event.target.files[0]);
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleFabClick = () => {
+    if (fileInputRef.current)
+      fileInputRef.current.click();
+  };
+
+  const handleCatergoryChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
 
-const handleClickOpen = () => {
-  setOpen(true);
-};
-
-const handleClose = () => {
-  setOpen(false);
-};
-  //Get meal from API
-  React.useEffect(() => {
+  //Get meal from API if id is present
+  useEffect(() => {
     async function fetchData() {
       const endpoint = api_url + "meals/" + id;
       try {
@@ -93,7 +86,7 @@ const handleClose = () => {
         setImageURL(data.image_url);
         setDescription(data.description);
       } catch (e) {
-        //todo show dialog / modal or something
+        // TODO: show dialog / modal or something
         console.log(e);
       }
     }
@@ -103,8 +96,8 @@ const handleClose = () => {
   }, [id]);
 
 
-  //Get all sections from API
-  React.useEffect(() => {
+  //Get all sections (Categories) from API
+  useEffect(() => {
     async function fetchData() {
       const endpoint = api_url + "sections";
       try {
@@ -124,10 +117,7 @@ const handleClose = () => {
       method: "DELETE",
     })
       .then((response) => response.json())
-      .then((data) => {
-        // console.log("Success:", data);
-        // setName("");
-        // setCategory("");
+      .then((_data) => {
         navigate(-1);
       })
       .catch((error) => {
@@ -139,14 +129,14 @@ const handleClose = () => {
     event.preventDefault();
     var image_url = "";
 
-    if(selectedFile) {
+    if (selectedFile) {
       const formData = new FormData();
       formData.append("image", selectedFile);
       const result = await fetch(api_url + "upload", {
         method: "POST",
         body: formData,
       }).then((response) => response.json());
-     if(result.path) {
+      if (result.path) {
         image_url = api_url + result.path;
         console.log("saved in " + api_url + result.path);
       }
@@ -161,7 +151,7 @@ const handleClose = () => {
       //Save a meal
       const meal: Meal = {
         name: name,
-        image_url: (image_url ? image_url : imageURL), 
+        image_url: (image_url ? image_url : imageURL),
         description: description,
         sectionId: category,
       };
@@ -176,10 +166,7 @@ const handleClose = () => {
           body: JSON.stringify(meal),
         })
           .then((response) => response.json())
-          .then((data) => {
-            // console.log("Success:", data);
-            // setName("");
-            // setCategory("");
+          .then((_data) => {
             navigate(-1);
           })
           .catch((error) => {
@@ -197,10 +184,7 @@ const handleClose = () => {
         body: JSON.stringify(meal),
       })
         .then((response) => response.json())
-        .then((data) => {
-          // console.log("Success:", data);
-          // setName("");
-          // setCategory("");
+        .then((_data) => {
           navigate(-1);
         })
         .catch((error) => {
@@ -258,7 +242,7 @@ const handleClose = () => {
                         value={category}
                         label="Category"
                         required
-                        onChange={handleChange}
+                        onChange={handleCatergoryChange}
                       >
                         {categories.map((category) => (
                           <MenuItem key={category.id} value={category.id}>
@@ -279,36 +263,62 @@ const handleClose = () => {
                       variant="outlined"
                       value={description}
                       onChange={(event) => setDescription(event.target.value)}
+                      multiline
+                      rows={4}
                     />
                   </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      component="label"
-                      variant="contained"
-                      startIcon={<CloudUploadIcon />}
+                  <Grid item xs={12}>
+                    <fieldset
+                      style={{
+                        margin: 0,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: "4px",
+                        borderWidth: "1px",
+                        borderColor: "#525252",
+                        position: "relative",
+                      }}
                     >
-                      Upload file
-                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                    </Button>
-                  </Grid>
+                      <legend style={{ color: "#bcbcbc" }}>
+                        <Typography sx={{ fontSize: "13px" }}>Image</Typography>
+                      </legend>
+                      <img
+                        src={imageURL ? imageURL : placeholder}
+                        alt="meal"
+                        style={{ maxHeight: "300px" }}
+                      />
 
-                  <Grid item xs={4} 
-                        style={{ textAlign: "center" }} >
+                      <Fab
+                        size="small"
+                        color="secondary"
+                        aria-label="Upload file"
+                        onClick={handleFabClick}
+                        style={{
+                          position: "absolute",
+                          bottom: "8px",
+                          right: "8px"
+                        }}
+                      >
+                        <EditIcon />
+                        <input type="file" ref={fileInputRef} hidden onChange={handleFileChange} />
+                      </Fab>
+                    </fieldset>
+                  </Grid>
+                  <Grid item xs={12} style={{ textAlign: "right" }}>
                     {id && (
                       <Button
                         variant="contained"
                         color="error"
                         startIcon={<DeleteForeverIcon />}
-                        onClick={handleClickOpen}
+                        onClick={() => setShowDeleteDialog(true)}
+                        sx={{ marginRight: "8px" }}
                       >
                         Delete
                       </Button>
                     )}
-                  </Grid>
-                  <Grid item xs={4} style={{ textAlign: "right" }}>
                     <Button
                       variant="contained"
-                      color="secondary"
                       type="submit"
                       startIcon={<SaveOutlined />}
                     >
@@ -322,8 +332,8 @@ const handleClose = () => {
         </Container>
       </Box>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -334,7 +344,7 @@ const handleClose = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={() => setShowDeleteDialog(false)} color="primary">
             Cancel
           </Button>
           <Button onClick={handleDelete} color="primary" autoFocus>
