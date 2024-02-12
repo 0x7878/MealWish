@@ -15,7 +15,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 
-i18n.changeLanguage('de')
+//get the browser language
+const lang = navigator.language || navigator.languages[0];
+i18n.changeLanguage(lang);
 
 function Home() {
 
