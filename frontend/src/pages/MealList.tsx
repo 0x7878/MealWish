@@ -214,7 +214,7 @@ function MealList() {
     }
   };
 
-  const addToList = async (meal_id: number) => {
+  const addToList = async (meal_id: number, from_wishes: boolean = false) => {
     var user = userRef.current;
     await getOrCreatePlan();
     //check if meal is already in plan
@@ -239,7 +239,7 @@ function MealList() {
       });
        const data = await response.json();
        const mealName = meals.find((meal) => meal.id === data.mealId)?.name;
-      setSnackbar({ data: data.id, showAction:true, open: true, message: t("Added meal to the list", { mealName: mealName })});
+      setSnackbar({ data: data.id, showAction: !from_wishes, open: true, message: t("Added meal to the list", { mealName: mealName })});
     }else
     {
       const mealName = meals.find((meal) => meal.id === data[0].mealId)?.name; 
@@ -472,7 +472,7 @@ const addToWishList = async (mealId: number) => {
                   >
                     <ListItemButton
                       onClick={() => {
-                        addToList(wish.meal.id); 
+                        addToList(wish.meal.id, true); 
                         removeFromWishList(wish.id);
                       }
                     }
