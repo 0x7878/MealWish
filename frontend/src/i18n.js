@@ -13,7 +13,7 @@ const resources = {
       "No meals found for this week": "Für diese Woche wurden keine Esenswünsche gefunden",
       "Remove from day": "Aus dem plan entfernen",
       "Edit": "Bearbeiten",
-      "Manage Meals": "Wünsche verwalten",
+      "Manage Meals": "Gerichte verwalten",
       "CW": "KW",
       "Manage Categories": "Kategorien verwalten",
       "Add Meal": "Gericht hinzufügen",
