@@ -25,9 +25,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-all": "concurrently \"npm start\" \"npm run api\"",
     "start": "react-scripts start",
-    "api": "json-server --watch fake_db.json --port 8000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,8 +49,6 @@
     ]
   },
   "devDependencies": {
-    "@r2wc/react-to-web-component": "^2.0.3",
-    "concurrently": "^8.2.2",
-    "json-server": "^1.0.0-alpha.16"
+    "@r2wc/react-to-web-component": "^2.0.3"
   }
 }
