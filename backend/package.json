@@ -4,7 +4,8 @@
   "description": "basic api to provide functionality",
   "scripts": {
     "start": "ts-node src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
