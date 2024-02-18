@@ -1,1 +1,122 @@
-{}
+{
+  "meals": [
+    {
+      "name": "Burger",
+      "image_url": "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg",
+      "description": "Bic Mac Burger with fries, am liebsten selbstgemacht! \n",
+      "sectionId": "3",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "name": "Pizza",
+      "image_url": "https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg",
+      "description": "Pizza with tomato sauce",
+      "sectionId": "3"
+    },
+    {
+      "name": "Pasta",
+      "image_url": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+      "description": "Pasta with tomato sauce and this is very good!",
+      "sectionId": "6",
+      "id": "3"
+    }
+  ],
+  "sections": [
+    {
+      "id": "1",
+      "name": "Meat",
+      "icon": "meat"
+    },
+    {
+      "id": "2",
+      "name": "Low-Carb",
+      "icon": ""
+    },
+    {
+      "id": "3",
+      "name": "Fast-Food",
+      "icon": "fastfood"
+    },
+    {
+      "id": "4",
+      "name": "Vegetarian",
+      "icon": ""
+    },
+    {
+      "id": "5",
+      "name": "Fish",
+      "icon": "fish"
+    },
+    {
+      "id": "6",
+      "name": "Noodels",
+      "icon": "noodles"
+    }
+  ],
+  "wishes": [
+    {
+      "mealId": "1",
+      "added_by": "Anton Davaria",
+      "id": 1
+    },
+    {
+      "mealId": "3",
+      "added_by": "Paula",
+      "id": 2
+    }
+  ],
+  "plans": [
+    {
+      "id": "1",
+      "year": "2024",
+      "cw": "1"
+    },
+    {
+      "year": 2024,
+      "cw": 5,
+      "id": "GZ30opG"
+    },
+    {
+      "year": 2024,
+      "cw": 6,
+      "id": "9007E-S"
+    },
+    {
+      "year": 2024,
+      "cw": 7,
+      "id": "0Ycyd3Y"
+    },
+    {
+      "year": 2024,
+      "cw": 8,
+      "id": "RAkbBln"
+    }
+  ],
+  "meals_in_plan": [
+    {
+      "planId": "9007E-S",
+      "mealId": "1",
+      "added_by": "unknown",
+      "id": 3
+    },
+    {
+      "planId": "0Ycyd3Y",
+      "mealId": "3",
+      "added_by": "unknown",
+      "id": 4
+    },
+    {
+      "planId": "RAkbBln",
+      "mealId": "3",
+      "added_by": "unknown",
+      "id": 5
+    },
+    {
+      "planId": "9007E-S",
+      "mealId": "3",
+      "added_by": "unknown",
+      "id": 6
+    }
+  ]
+}
