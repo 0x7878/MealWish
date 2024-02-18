@@ -295,7 +295,7 @@ export default function AddMeal(props: any) {
                       <img
                         src={imageURL ? imageURL : placeholder}
                         alt="meal"
-                        style={{ maxHeight: "300px" }}
+                        style={{ maxHeight: "300px", maxWidth: "80vw" }}
                       />
 
                       <Fab
