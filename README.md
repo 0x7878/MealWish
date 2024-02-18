@@ -9,7 +9,7 @@ The chef or the household can then decide which dishes he or she will cook in th
 following days. Users can see the plan in the overview, and members who are responsible for 
 shopping can also plan what they have to buy.
 
-![Meal Wish](docs/start.png =300x)
+<img src="docs/start.png" alt="Meal Wish" width="400" />
 
 ## Requirement
 
