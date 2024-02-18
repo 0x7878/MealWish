@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "basic api to provide functionality",
   "scripts": {
+    "start:dev": "NODE_ENV=development && npm start",
+    "start:prod": "NODE_ENV=production && node src/server.js",
     "start": "ts-node src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
