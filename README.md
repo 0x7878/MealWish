@@ -11,7 +11,6 @@ shopping can also plan what they have to buy.
 
 <img src="docs/start.png" alt="Meal Wish" width="400" />
 
-
 ## Requirement
 
 MealWish is a REACT application wrapped in a web component that seamlessly integrates with
